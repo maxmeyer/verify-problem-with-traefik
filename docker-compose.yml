@@ -22,8 +22,8 @@ services:
       - ./data:/data
     labels:
       - traefik.enable = true
-      - 'traefik.default.frontend.rule=HostRegexp: {subdomain:[a-z-]+}.example.com'
-      - 'traefik.docs.frontend.rule=HostRegexp: {subdomain:[a-z]+}.docs.example.com'
+      - 'traefik.default.frontend.rule=HostRegexp: {subdomain:[a-z1-9-]+}.example.com'
+      - 'traefik.docs.frontend.rule=HostRegexp: {subdomain:[a-z1-9-]+}.docs.example.com'
 
 networks:
   internal:
