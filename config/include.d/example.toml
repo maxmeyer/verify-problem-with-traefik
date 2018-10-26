@@ -1,0 +1,5 @@
+[[tls]]
+entryPoints = ["https"]
+[tls.certificate]
+    certFile = "/ssl/server1.pem"
+    keyFile = "/ssl/server1.key"

@@ -1,0 +1,32 @@
+debug = true
+logLevel = "DEBUG"
+
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+[entryPoints.http]
+address = ":80"
+  [entryPoints.http.redirect]
+  entryPoint = "https"
+[entryPoints.https]
+address = ":443"
+
+  [entryPoints.https.tls]
+    [[entryPoints.https.tls.certificates]]
+    certFile = "/ssl/server1.pem"
+    keyFile = "/ssl/server1.key"
+
+[api]
+entryPoint = "traefik"
+ dashboard = true
+ debug = true
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "example.com"
+watch = true
+exposedByDefault = true
+
+[file]
+directory = "/etc/traefik/include.d"
+watch = true

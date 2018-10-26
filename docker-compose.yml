@@ -1,0 +1,29 @@
+version: "3"
+services:
+  loadbalancer:
+    # replace username/repo:tag with your name and image details
+    image: containous/traefik
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8082:8080"
+    networks:
+      - internal
+    volumes:
+      - ./ssl:/ssl
+      - ./config:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock
+  webserver:
+    # replace username/repo:tag with your name and image details
+    image: feduxorg/local_webserver
+    networks:
+      - internal
+    volumes:
+      - ./data:/data
+    labels:
+      - traefik.enable = true
+      - 'traefik.default.frontend.rule=HostRegexp: {subdomain:[a-z-]+}.example.com'
+      - 'traefik.docs.frontend.rule=HostRegexp: {subdomain:[a-z]+}.docs.example.com'
+
+networks:
+  internal:

@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+
+cert1_conf=$(mktemp)
+
+echo $cert1_conf
+
+cat > $cert1_conf <<-EOS
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+CN = www.example.com
+[v3_req]
+keyUsage = keyEncipherment, dataEncipherment
+basicConstraints = CA:FALSE
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1=*.example.com
+EOS
+
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout ssl/server1.key -out ssl/server1.pem -config $cert1_conf -extensions 'v3_req'
+
+
+cert2_conf=$(mktemp)
+
+echo $cert2_conf
+
+cat > $cert2_conf <<-EOS
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+[req_distinguished_name]
+CN = www.docs.example.com
+[v3_req]
+keyUsage = keyEncipherment, dataEncipherment
+basicConstraints = CA:FALSE
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+[alt_names]
+DNS.1=*.docs.example.com
+EOS
+
+openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout ssl/server2.key -out ssl/server2.pem -config $cert2_conf -extensions 'v3_req'
